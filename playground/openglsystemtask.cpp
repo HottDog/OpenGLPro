@@ -4,13 +4,16 @@
 #include"normaltask.h"
 #include"playground/customOpengl/twotriangle.h"
 #include"playground/customOpengl/RectAddRect.h"
+#include"playground/customOpengl/DrawPicture.h"
+#include"playground/customOpengl/DrawSomePictures.h"
 bool OpenglSystemTask::Run() {
 	IOpenglTask *task;
 	//ÊµÀý»¯task
 	//task = new NormalTask();
 	//task = new TwoTriangle();
-	task = new RectAddRect();
-
+	//task = new RectAddRect();
+	//task = new DrawPicture();
+	task = new DrawSomePictures();
 	task->Start();
 
 	do {

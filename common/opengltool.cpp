@@ -51,6 +51,20 @@ GLuint CreateVAO(int index) {
 	return VertexArrayID;
 }
 
+void VAOBindBuffer(GLuint vao,GLuint vbo, int index,int size )
+{
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBindVertexArray(vao);
+	glVertexAttribPointer(
+		index,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
+		size,                  // size
+		GL_FLOAT,           // type
+		GL_FALSE,           // normalized?
+		0,                  // stride
+		(void*)0            // array buffer offset
+	);
+}
+
 //创建一个VBO
 GLuint CreateVBO(int index) {
 	GLuint vertexbuffer;
@@ -66,18 +80,29 @@ void VBOBindData(GLuint vbo,const GLfloat* data,int size)
 	glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
 }
 
-void VAOBindBuffer(GLuint vao, GLuint vbo, int index)
-{
-	glBindVertexArray(vao);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glVertexAttribPointer(
-		index,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
-		3,                  // size
-		GL_FLOAT,           // type
-		GL_FALSE,           // normalized?
-		0,                  // stride
-		(void*)0            // array buffer offset
-	);
+GLuint CreateEBO(int index) {
+	GLuint elementBuffer;
+	glGenBuffers(index, &elementBuffer);
+	cout << "EBO(id):" << elementBuffer << endl;
+	return elementBuffer;
+}
+
+void EBOBindData(GLuint ebo, const unsigned int* data, int size) {
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
+}
+
+GLuint CreateTexture(int index) {
+	GLuint texture;
+	glGenTextures(index, &texture);
+	cout << "Texture(id):" << texture << endl;
+	return texture;
+}
+
+void TextureBindData(GLuint texture, int level, int width, int height, unsigned char * data) {
+	glBindTexture(GL_TEXTURE_2D,texture);
+	glTexImage2D(GL_TEXTURE_2D, level, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+	glGenerateMipmap(GL_TEXTURE_2D);
 }
 
 double GetCurTime() {
@@ -111,42 +136,10 @@ mat4 GetBaseMVP() {
 	return MVP;
 }
 
-Vertexs TriangleToVertexs(vector<Triangle>& triangles) {
-	Vertexs vertexs;
-	int count = triangles.size() * 3*3;
-	vertexs.datas = new float[count];
-	vertexs.count = count;
-	int i = 0;
-	for each (Triangle var in triangles)
-	{
-		Point x = var.x;		
-		vertexs.datas[i] = x.x;
-		vertexs.datas[i + 1] = x.y;
-		vertexs.datas[i + 2] = x.z;
-		Point y = var.y;
-		vertexs.datas[i + 3] = y.x;
-		vertexs.datas[i + 4] = y.y;
-		vertexs.datas[i + 5] = y.z;
-		Point z = var.z;
-		vertexs.datas[i + 6] = z.x;
-		vertexs.datas[i + 7] = z.y;
-		vertexs.datas[i + 8] = z.z;
-		i += 9;
-	}
-	return vertexs;
-}
-
-//rect-->>triangle-->vertexs
-Vertexs RectToVertexs(vector<Rect>& rects) {
-	vector<vector<Triangle>> datas;
-	for each (Rect var in rects)
-	{
-		datas.push_back(var.Convert());
-	}
-	Vertexs v = TriangleToVertexs(Add(datas));
-	return v;
-}
-
-Vertexs RectToVertexs(Rect rect) {
-	return TriangleToVertexs(rect.Convert());
+GLuint GetDefaultShaderWithoutSuffix(char * shadername) {
+	string vert_str(shadername);
+	vert_str = "shader/" + vert_str + ".vert";
+	string frag_str(shadername);
+	frag_str = "shader/" + frag_str + ".frag";
+	return LoadShaders(vert_str.c_str(), frag_str.c_str());
 }

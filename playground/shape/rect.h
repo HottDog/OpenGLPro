@@ -11,17 +11,25 @@
 //       -sin(a),cos(a)]
 class Rect {
 public :
+	enum TexFillType {
+		Fill, Rele
+	};
+	
 	static int ID ;
+
 	Rect();
 	Rect(float x, float y, float w, float h);
 	int id;
 	vector<Triangle> Convert();
+	Mesh GetMesh();
 	float w;
 	float h;
 	float x;
 	float y;
 	
 	float angle = 0;  //½Ç¶È¶ÈÊý
+	TexFillType texFillType = Fill;
+	char * image;
 
 	Point topLeft;
 	Point topRight;
@@ -37,6 +45,13 @@ private:
 
 	Point ToPos(Point & point);
 
-	//Point Rotate(Point& t, float a);
+	Point2D ToUvPos(Point & point);
 
+	Indexs CreateIndexs();
+	//Point Rotate(Point& t, float a);
+	UVs GetUVs();
+
+	UVs GetFillUVs();
+
+	UVs GetRelaUVs();
 };

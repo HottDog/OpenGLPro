@@ -27,12 +27,26 @@ void NormalDrawData::CleanRects() {
 	rectCount = 0;
 }
 
-Vertexs NormalDrawData::ToVertexs() {
+Vertexs NormalDrawData::ToVertexs(bool isElement) {
 	Vertexs v;
 	if (rectCount == 0) {
 		return v;
 	}
 	else {
-		return RectToVertexs(rects);
+		if (isElement) {
+			return RectsToVertexs(rects, isElement);
+		}
+		else {
+			return RectsToVertexs(rects);
+		}
+		
 	}
+}
+
+Indexs NormalDrawData::ToIndexs() {
+	return RectsToIndexs(rects);
+}
+
+UVs NormalDrawData::ToUVs() {
+	return RectsToUVs(rects);
 }

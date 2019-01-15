@@ -1,4 +1,5 @@
 #include"playground/util/rectutil.h"
+#include"DataUtil.h"
 vector<Rect> SegaRect(Rect& r) {
 	r.Process();
 
