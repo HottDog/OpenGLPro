@@ -6,7 +6,7 @@ RectAddRect::RectAddRect() {
 
 bool RectAddRect::Start() {
 	NormalTask::Start();
-	shader = LoadShaders("shader/test.vertexshader", "shader/test.fragmentshader");
+	shader = GetDefaultShaderWithoutSuffix("test");
 	VAO = CreateVAO(1);
 	VBO = CreateVBO(1);
 	
@@ -83,7 +83,7 @@ void RectAddRect::_DrawFrame() {
 	//开启VAO
 	glEnableVertexAttribArray(0);
 	//绘制第一个矩形
-	
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glDrawArrays(GL_TRIANGLES, 0, 3 * drawData.rectCount * 2);
 	for (int i = 0; i < 0; i++) {
 		x += 120;
@@ -94,6 +94,7 @@ void RectAddRect::_DrawFrame() {
 		Vertexs v = drawData.ToVertexs();
 		//这样就是一次drawcall
 		VBOBindData(VBO, v.datas, v.count * 4);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		glDrawArrays(GL_TRIANGLES, 0, 3 * drawData.rectCount * 2);
 	}
 	//关闭VAO

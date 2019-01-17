@@ -41,3 +41,71 @@ void DrawRect(Rect & rect, GLuint vao, GLuint vertex, GLuint uv,GLuint ebo,GLuin
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
 }
+
+void DrawRectLine(Rect & rect, GLuint vao, GLuint vertex, GLuint uv, GLuint ebo, GLuint shader) {
+	//
+	glUseProgram(shader);
+	Vertexs v = rect.GetMesh().vertexs;
+	VBOBindData(vertex, v.datas, v.count * 4);
+	PrintVertexs(v, 2);
+	delete v.datas;
+	VAOBindBuffer(vao, vertex, 0);
+
+	UVs uvs = rect.GetMesh().uvs;
+	VBOBindData(uv, uvs.datas, uvs.count * 4);
+	PrintVertexs(uvs, 1);
+	delete uvs.datas;
+	VAOBindBuffer(vao, uv, 1, 2);
+
+	Indexs indexs = rect.GetMesh().indexs;
+	EBOBindData(ebo, indexs.datas, indexs.count * 4);
+	delete indexs.datas;
+
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+	//用线框模式绘图
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)0);
+	GLenum en = glGetError();
+	
+	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
+	//关闭用线框模式绘图
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+}
+
+void DrawFontItem(Font::FontItem item,vec3 color, GLuint vao, GLuint vertex, GLuint uv, GLuint ebo,GLuint shader) {
+	glUseProgram(shader);
+	
+	Rect rect = item.rect;
+	Character character = item.character;
+
+	Vertexs v = rect.GetMesh().vertexs;
+	VBOBindData(vertex, v.datas, v.count * 4);
+	PrintVertexs(v, 2);
+	delete v.datas;
+	VAOBindBuffer(vao, vertex, 0);
+
+	UVs uvs = rect.GetMesh().uvs;
+	VBOBindData(uv, uvs.datas, uvs.count * 4);
+	PrintVertexs(uvs, 1);
+	delete uvs.datas;
+	VAOBindBuffer(vao, uv, 1, 2);
+
+	Indexs indexs = rect.GetMesh().indexs;
+	EBOBindData(ebo, indexs.datas, indexs.count * 4);
+	delete indexs.datas;
+
+	//vec3 color(1, 0, 0);
+	//传入textColor值
+	glUniform3f(glGetUniformLocation(shader, "texColor"), color.x, color.y, color.z);
+	glBindTexture(GL_TEXTURE_2D, character.textureID);
+
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)0);
+	GLenum en = glGetError();
+	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
+}

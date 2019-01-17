@@ -1,5 +1,6 @@
 #include"rect.h"
 #include"playground/util/DataUtil.h"
+#include"playground/util/rectutil.h"
 int Rect::ID = 0;
 
 Rect::Rect(){
@@ -46,27 +47,7 @@ Mesh Rect::GetMesh() {
 	return mesh;
 }
 
-float Rect::ToX(float posx) {
-	return (posx / WIDTH) * 2 - 1;
-}
 
-float Rect::ToY(float posy) {
-	return 1 - ((posy / HEIGHT) * 2);
-}
-
-Point Rect::ToPos(Point & point) {
-	Point t;
-	t.x = ToX(point.x);
-	t.y = ToY(point.y);
-	return t;
-}
-
-Point2D Rect::ToUvPos(Point & point) {
-	Point2D t;
-	t.x = point.x / WIDTH;
-	t.y = 1 - point.y / HEIGHT;
-	return t;
-}
 
 Indexs Rect::CreateIndexs() {
 	Indexs indexs;

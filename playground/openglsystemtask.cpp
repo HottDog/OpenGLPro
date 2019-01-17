@@ -6,6 +6,8 @@
 #include"playground/customOpengl/RectAddRect.h"
 #include"playground/customOpengl/DrawPicture.h"
 #include"playground/customOpengl/DrawSomePictures.h"
+#include"playground/customOpengl/DrawFont.h"
+#include"playground/customOpengl/DrawText.h"
 bool OpenglSystemTask::Run() {
 	IOpenglTask *task;
 	//ÊµÀý»¯task
@@ -13,7 +15,9 @@ bool OpenglSystemTask::Run() {
 	//task = new TwoTriangle();
 	//task = new RectAddRect();
 	//task = new DrawPicture();
-	task = new DrawSomePictures();
+	//task = new DrawSomePictures();
+	//task = new DrawFont();
+	task = new DrawText();
 	task->Start();
 
 	do {

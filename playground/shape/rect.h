@@ -37,16 +37,9 @@ public :
 	Point bottomLeft;
 
 	void Process();
+
 private:	
-	//转化成opengl的x坐标
-	float ToX(float posx);
-	//转化成opengl的y坐标
-	float ToY(float posy);
-
-	Point ToPos(Point & point);
-
-	Point2D ToUvPos(Point & point);
-
+	
 	Indexs CreateIndexs();
 	//Point Rotate(Point& t, float a);
 	UVs GetUVs();

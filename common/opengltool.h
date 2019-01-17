@@ -12,8 +12,18 @@
 #include<string>
 #include<vector>
 #include"common/stb_image.h"
+#include<map>
 using namespace std;
 using namespace glm;
+
+struct Character{
+	char value;
+	GLuint textureID;   // 字形纹理的ID
+	ivec2 size;			// 字形大小
+	ivec2 Bearing;	    // 从基准线到字形左部/顶部的偏移值
+	GLuint Advance;		// 原点距下一个字形原点的距离
+};
+
 //创建openGL的一个窗口
 GLFWwindow* CreateGLWindows(int length,int width,char * title);
 
@@ -56,4 +66,6 @@ double GetDeltaTime();
 mat4 GetBaseMVP();
 
 GLuint GetDefaultShaderWithoutSuffix(char * shadername);
+
+map<GLchar, Character> LoadFont(char * fontpath = "res/Fonts/arial.ttf");
 
