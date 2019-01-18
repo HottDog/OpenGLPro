@@ -1,5 +1,5 @@
 #include"twotriangle.h"
-#include"playground/shape/rect.h"
+#include"playground/util/DataUtil.h"
 
 TwoTriangle::TwoTriangle() {
 	name = "TwoTriangle";
@@ -55,7 +55,7 @@ bool TwoTriangle::Start() {
 	//vector<Rect> rects;
 	//rects.push_back(rect1);
 	//rects.push_back(rect2);
-	Vertexs v = RectToVertexs(rects);
+	Vertexs v = RectsToVertexs(rects);
 	//绑定VBO
 	VBOBindData(VBO, v.datas, v.count*4);
 	//VBOBindData(VBO, triangle_vertex2, sizeof(triangle_vertex2));
@@ -69,7 +69,7 @@ bool TwoTriangle::Draw() {
 	//开启VAO
 	glEnableVertexAttribArray(0);
 	//绑定VAO
-	VAOBindBuffer(VAO, VBO, 0);
+	VAOBindBuffer(VAO,VBO, 0);
 	//绘制三角形
 
 	glDrawArrays(GL_TRIANGLES, 0, 3*rectNum*2);

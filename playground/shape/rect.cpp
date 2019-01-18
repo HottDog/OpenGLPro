@@ -1,4 +1,6 @@
 #include"rect.h"
+#include"playground/util/DataUtil.h"
+#include"playground/util/rectutil.h"
 int Rect::ID = 0;
 
 Rect::Rect(){
@@ -31,20 +33,59 @@ vector<Triangle> Rect::Convert() {
 	return triangles;
 }
 
-float Rect::ToX(float posx) {
-	return (posx / WIDTH) * 2 - 1;
+Mesh Rect::GetMesh() {
+	Process();
+	vector<Point> points;
+	points.push_back(ToPos(topLeft));
+	points.push_back(ToPos(topRight));
+	points.push_back(ToPos(bottomRight));
+	points.push_back(ToPos(bottomLeft));
+	Mesh mesh;
+	mesh.vertexs = PointsToVertexs(points);
+	mesh.indexs = CreateIndexs();
+	mesh.uvs = GetUVs();
+	return mesh;
 }
 
-float Rect::ToY(float posy) {
-	return 1 - ((posy / HEIGHT) * 2);
+
+
+Indexs Rect::CreateIndexs() {
+	Indexs indexs;
+	indexs.count = 6;
+	indexs.datas = new unsigned int[indexs.count]{
+		0,2,1,
+		0,3,2
+	};
+	return indexs;
 }
 
-Point Rect::ToPos(Point & point) {
-	Point t;
-	t.x = ToX(point.x);
-	t.y = ToY(point.y);
-	return t;
+UVs Rect::GetUVs() {
+	if (texFillType == Fill) {
+		return GetFillUVs();
+	}
+	else {
+		return GetRelaUVs();
+	}
 }
+
+UVs Rect::GetFillUVs() {
+	vector<Point2D> points;
+	points.push_back(Point2D(0, 1));
+	points.push_back(Point2D(1, 1));
+	points.push_back(Point2D(1, 0));
+	points.push_back(Point2D(0, 0));
+	return PointsToUVs(points);
+}
+
+UVs Rect::GetRelaUVs() {
+	vector<Point2D> points;
+	points.push_back(ToUvPos(topLeft));
+	points.push_back(ToUvPos(topRight));
+	points.push_back(ToUvPos(bottomRight));
+	points.push_back(ToUvPos(bottomLeft));
+	return PointsToUVs(points);
+}
+
 
 void Rect::Process() {
 	topLeft.x =x;

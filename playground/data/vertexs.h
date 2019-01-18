@@ -7,6 +7,22 @@ struct Vertexs {
 	int count;
 };
 
+struct Indexs {
+	unsigned int * datas;
+	int count;
+};
+
+struct UVs {
+	float * datas;
+	int count;
+};
+
+struct Mesh {
+	Vertexs vertexs;
+	Indexs indexs;
+	UVs uvs;
+};
+
 struct Triangle {
 	Point x;
 	Point y;

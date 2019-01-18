@@ -11,17 +11,25 @@
 //       -sin(a),cos(a)]
 class Rect {
 public :
+	enum TexFillType {
+		Fill, Rele
+	};
+	
 	static int ID ;
+
 	Rect();
 	Rect(float x, float y, float w, float h);
 	int id;
 	vector<Triangle> Convert();
+	Mesh GetMesh();
 	float w;
 	float h;
 	float x;
 	float y;
 	
 	float angle = 0;  //角度度数
+	TexFillType texFillType = Fill;
+	char * image;
 
 	Point topLeft;
 	Point topRight;
@@ -29,14 +37,14 @@ public :
 	Point bottomLeft;
 
 	void Process();
+
 private:	
-	//转化成opengl的x坐标
-	float ToX(float posx);
-	//转化成opengl的y坐标
-	float ToY(float posy);
-
-	Point ToPos(Point & point);
-
+	
+	Indexs CreateIndexs();
 	//Point Rotate(Point& t, float a);
+	UVs GetUVs();
 
+	UVs GetFillUVs();
+
+	UVs GetRelaUVs();
 };

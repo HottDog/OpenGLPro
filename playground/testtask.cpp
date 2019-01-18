@@ -88,7 +88,7 @@ bool TestTask::Run() {
 	//给VBO传入数据
 	//cout << "triangle_vertex_buffer_data的数量:" << sizeof(triangle_vertex_buffer_data) << endl;
 	VBOBindData(vertexbuffer, g_vertex_buffer_data, sizeof(g_vertex_buffer_data));
-	VAOBindBuffer(VertexArrayID,vertexbuffer, 0);
+	VAOBindBuffer(VertexArrayID, vertexbuffer, 0);
 	bool isLeft = false;
 	do {
 		// Clear the screen. It's not mentioned before Tutorial 02, but it can cause flickering, so it's there nonetheless.

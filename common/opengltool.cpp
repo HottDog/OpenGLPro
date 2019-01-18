@@ -1,4 +1,6 @@
 ﻿#include"opengltool.h"
+#include<ft2build.h>
+#include FT_FREETYPE_H
 GLFWwindow * CreateGLWindows(int width, int height, char * title)
 {
 	// 初始化 GLFW
@@ -51,6 +53,20 @@ GLuint CreateVAO(int index) {
 	return VertexArrayID;
 }
 
+void VAOBindBuffer(GLuint vao,GLuint vbo, int index,int size )
+{
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBindVertexArray(vao);
+	glVertexAttribPointer(
+		index,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
+		size,                  // size
+		GL_FLOAT,           // type
+		GL_FALSE,           // normalized?
+		0,                  // stride
+		(void*)0            // array buffer offset
+	);
+}
+
 //创建一个VBO
 GLuint CreateVBO(int index) {
 	GLuint vertexbuffer;
@@ -66,18 +82,29 @@ void VBOBindData(GLuint vbo,const GLfloat* data,int size)
 	glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
 }
 
-void VAOBindBuffer(GLuint vao, GLuint vbo, int index)
-{
-	glBindVertexArray(vao);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glVertexAttribPointer(
-		index,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
-		3,                  // size
-		GL_FLOAT,           // type
-		GL_FALSE,           // normalized?
-		0,                  // stride
-		(void*)0            // array buffer offset
-	);
+GLuint CreateEBO(int index) {
+	GLuint elementBuffer;
+	glGenBuffers(index, &elementBuffer);
+	cout << "EBO(id):" << elementBuffer << endl;
+	return elementBuffer;
+}
+
+void EBOBindData(GLuint ebo, const unsigned int* data, int size) {
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
+}
+
+GLuint CreateTexture(int index) {
+	GLuint texture;
+	glGenTextures(index, &texture);
+	cout << "Texture(id):" << texture << endl;
+	return texture;
+}
+
+void TextureBindData(GLuint texture, int level, int width, int height, unsigned char * data) {
+	glBindTexture(GL_TEXTURE_2D,texture);
+	glTexImage2D(GL_TEXTURE_2D, level, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+	glGenerateMipmap(GL_TEXTURE_2D);
 }
 
 double GetCurTime() {
@@ -111,42 +138,83 @@ mat4 GetBaseMVP() {
 	return MVP;
 }
 
-Vertexs TriangleToVertexs(vector<Triangle>& triangles) {
-	Vertexs vertexs;
-	int count = triangles.size() * 3*3;
-	vertexs.datas = new float[count];
-	vertexs.count = count;
-	int i = 0;
-	for each (Triangle var in triangles)
-	{
-		Point x = var.x;		
-		vertexs.datas[i] = x.x;
-		vertexs.datas[i + 1] = x.y;
-		vertexs.datas[i + 2] = x.z;
-		Point y = var.y;
-		vertexs.datas[i + 3] = y.x;
-		vertexs.datas[i + 4] = y.y;
-		vertexs.datas[i + 5] = y.z;
-		Point z = var.z;
-		vertexs.datas[i + 6] = z.x;
-		vertexs.datas[i + 7] = z.y;
-		vertexs.datas[i + 8] = z.z;
-		i += 9;
-	}
-	return vertexs;
+GLuint GetDefaultShaderWithoutSuffix(char * shadername) {
+	string vert_str(shadername);
+	vert_str = "shader/" + vert_str + ".vert";
+	string frag_str(shadername);
+	frag_str = "shader/" + frag_str + ".frag";
+	return LoadShaders(vert_str.c_str(), frag_str.c_str());
 }
 
-//rect-->>triangle-->vertexs
-Vertexs RectToVertexs(vector<Rect>& rects) {
-	vector<vector<Triangle>> datas;
-	for each (Rect var in rects)
-	{
-		datas.push_back(var.Convert());
+//FreeType所做的事就是加载TrueType字体并为每一个字形生成位图以及计算几个度量值(Metric)。
+//我们可以提取出它生成的位图作为字形的纹理，并使用这些度量值定位字符的字形。
+//要加载一个字体，我们只需要初始化FreeType库，并且将这个字体加载为一个FreeType称之为面(Face)的东西。
+map<GLchar, Character> LoadFont(char * fontpath ) {
+	map<GLchar, Character> result;
+	FT_Library ft;
+	if (FT_Init_FreeType(&ft)) {
+		cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
+		return result;
 	}
-	Vertexs v = TriangleToVertexs(Add(datas));
-	return v;
+	FT_Face face;
+	if (FT_New_Face(ft, "res/Fonts/arial.ttf", 0, &face)) {
+		cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
+		return result;
+	}
+	//此函数设置了字体面的宽度和高度，将宽度值设为0表示我们要从字体面通过给定的高度中动态计算出字形的宽度
+	FT_Set_Pixel_Sizes(face, 0, 48);
+
+	//if (FT_Load_Char(face, 'X', FT_LOAD_RENDER)) {
+	//	cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
+	//	return false;
+	//}
+
+	//OpenGL要求所有的纹理都是4字节对齐的，即纹理的大小永远是4字节的倍数。
+	//通常这并不会出现什么问题，因为大部分纹理的宽度都为4的倍数并/或每像素使用4个字节，但是现在我们每个像素只用了一个字节，它可以是任意的宽度。
+	//通过将纹理解压对齐参数设为1，这样才能确保不会有对齐问题（它可能会造成段错误）。
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1); //禁用字节对齐限制
+	for (GLubyte c = 0; c < 128; c++) {
+		//加载字符的字形
+		if (FT_Load_Char(face, c, FT_LOAD_RENDER)) {
+			cout << "ERROR::FREETYTPE: Failed to load Glyph,this char is [" << c << "]" << std::endl;
+			continue;
+		}
+		GLuint tex = CreateTexture(1);
+		glBindTexture(GL_TEXTURE_2D, tex);
+		glTexImage2D(
+			GL_TEXTURE_2D,
+			0,
+			GL_RED,
+			face->glyph->bitmap.width,
+			face->glyph->bitmap.rows,
+			0,
+			GL_RED,
+			GL_UNSIGNED_BYTE,
+			face->glyph->bitmap.buffer);
+		//设置纹理选项
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		Character character = {
+			c,
+			tex,
+			ivec2(face->glyph->bitmap.width,face->glyph->bitmap.rows),
+			ivec2(face->glyph->bitmap_left,face->glyph->bitmap_top),
+			face->glyph->advance.x
+		};
+		result.insert(pair<GLchar, Character>(c, character));
+	}
+	FT_Done_Face(face);
+	FT_Done_FreeType(ft);
+	return result;
 }
 
-Vertexs RectToVertexs(Rect rect) {
-	return TriangleToVertexs(rect.Convert());
+void DeleteRectOG(RectOG & ogdata) {
+	glDeleteBuffers(1, &ogdata.vertex);
+	glDeleteBuffers(1, &ogdata.uv);
+	glDeleteBuffers(1, &ogdata.index);
+	glDeleteProgram(ogdata.shader);
+	glDeleteVertexArrays(1, &ogdata.vao);
 }

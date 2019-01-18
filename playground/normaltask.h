@@ -10,6 +10,7 @@ public:
 	int width = WIDTH;
 	int height = HEIGHT;
 	bool isClearFrame = true;
+	bool isAutoRefreshFrame = true;
 	NormalTask(char * n );
 	NormalTask();
 	virtual ~NormalTask();

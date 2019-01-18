@@ -1,4 +1,5 @@
 #include"playground/util/rectutil.h"
+#include"DataUtil.h"
 vector<Rect> SegaRect(Rect& r) {
 	r.Process();
 
@@ -31,4 +32,40 @@ vector<Rect> SegaRects(vector<Rect>& rs) {
 		rss.push_back(SegaRect(var));
 	}
 	return Add(rss);
+}
+
+Point ToRectPos(Point& p) {
+	Point result;
+	result.x = (p.x + 1) / 2 * WIDTH;
+	result.y = (1 - p.y) / 2 * HEIGHT;
+	return result;
+}
+
+vec2 ToRectSize(vec2& size) {
+	vec2 result;
+	result.x = size.x*WIDTH;
+	result.y = size.y*HEIGHT;
+	return result;
+}
+
+float ToX(float posx) {
+	return (posx / WIDTH) * 2 - 1;
+}
+
+float ToY(float posy) {
+	return 1 - ((posy / HEIGHT) * 2);
+}
+
+Point ToPos(Point & point) {
+	Point t;
+	t.x = ToX(point.x);
+	t.y = ToY(point.y);
+	return t;
+}
+
+Point2D ToUvPos(Point & point) {
+	Point2D t;
+	t.x = point.x / WIDTH;
+	t.y = 1 - point.y / HEIGHT;
+	return t;
 }

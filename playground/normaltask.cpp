@@ -10,7 +10,8 @@ bool NormalTask::Update() {
 		glClear(GL_COLOR_BUFFER_BIT);
 	Draw();
 	// Swap buffers,每次调用这个就表示刷新一帧
-	//glfwSwapBuffers(window);
+	if(isAutoRefreshFrame)
+		glfwSwapBuffers(window);
 	glfwPollEvents();
 	return true;
 }
