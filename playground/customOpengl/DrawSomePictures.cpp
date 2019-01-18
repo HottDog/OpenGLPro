@@ -21,15 +21,15 @@ bool DrawSomePictures::Start() {
 bool DrawSomePictures::Draw() {
 	Rect rect1(100, 100, 100, 100);
 	rect1.image = "res/container.jpg";
-	DrawRect(rect1, VAO, VBO, UV, EBO, texture);
+	DrawRect(rect1, VAO, VBO, UV, EBO, texture,shader);
 
 	Rect rect2(300, 100, 100, 100);
 	rect2.image = "res/wushi.jpg";
-	DrawRect(rect2, VAO, VBO, UV, EBO, texture);
+	DrawRect(rect2, VAO, VBO, UV, EBO, texture, shader);
 
 	Rect rect3(500, 100, 100, 100);
 	rect3.image = "res/yasuo.jpg";
-	DrawRect(rect3, VAO, VBO, UV, EBO, texture);
+	DrawRect(rect3, VAO, VBO, UV, EBO, texture, shader);
 	return true;
 }
 

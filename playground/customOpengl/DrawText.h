@@ -19,4 +19,5 @@ private:
 	map<GLchar, Character> characters;
 
 	Font font;
+	Font content;
 };

@@ -210,3 +210,11 @@ map<GLchar, Character> LoadFont(char * fontpath ) {
 	FT_Done_FreeType(ft);
 	return result;
 }
+
+void DeleteRectOG(RectOG & ogdata) {
+	glDeleteBuffers(1, &ogdata.vertex);
+	glDeleteBuffers(1, &ogdata.uv);
+	glDeleteBuffers(1, &ogdata.index);
+	glDeleteProgram(ogdata.shader);
+	glDeleteVertexArrays(1, &ogdata.vao);
+}

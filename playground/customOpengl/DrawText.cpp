@@ -19,17 +19,18 @@ bool DrawText::Start() {
 	EBO = CreateEBO(1);
 
 	//准备font数据
-	font = Font(vec2(100, 100), 50, "this is my font");
+	font = Font(vec2(100, 100), 20, "This is my font!");
 	font.Init(characters);
+
+	content = Font(vec2(300, 300), 29, "Life is strange");
+	content.Init(characters);
 	return true;
 }
 
 bool DrawText::Draw() {
 	NormalTask::Draw();
-	for each (Font::FontItem var in font.childs)
-	{
-		DrawFontItem(var, font.color, VAO, VBO, UV, EBO, shader);
-	}
+	DrawFont(font, VAO, VBO, UV, EBO, shader);
+	DrawFont(content, VAO, VBO, UV, EBO, shader);
 	return true;
 }
 

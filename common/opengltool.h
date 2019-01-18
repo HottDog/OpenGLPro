@@ -16,6 +16,15 @@
 using namespace std;
 using namespace glm;
 
+struct RectOG {
+	GLuint shader;
+	GLuint vao;
+	GLuint vertex;
+	GLuint uv;
+	GLuint index;
+	GLuint texture;
+};
+
 struct Character{
 	char value;
 	GLuint textureID;   // ×ÖÐÎÎÆÀíµÄID
@@ -68,4 +77,6 @@ mat4 GetBaseMVP();
 GLuint GetDefaultShaderWithoutSuffix(char * shadername);
 
 map<GLchar, Character> LoadFont(char * fontpath = "res/Fonts/arial.ttf");
+
+void DeleteRectOG(RectOG & rectOG);
 

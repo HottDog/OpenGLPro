@@ -4,7 +4,13 @@ void DrawMesh(Mesh & mesh, GLuint vao, GLuint vertex, GLuint uv) {
 
 }
 
-void DrawRect(Rect & rect, GLuint vao, GLuint vertex, GLuint uv,GLuint ebo,GLuint texture) {
+void DrawRect(Rect & rect, RectOG& ogdata) {
+	DrawRect(rect, ogdata.vao, ogdata.vertex, ogdata.uv, ogdata.index, ogdata.texture,ogdata.shader);
+}
+
+void DrawRect(Rect & rect, GLuint vao, GLuint vertex, GLuint uv,GLuint ebo,GLuint texture,GLuint shader) {
+	glUseProgram(shader);
+
 	Vertexs v = rect.GetMesh().vertexs;
 	VBOBindData(vertex, v.datas, v.count * 4);
 	PrintVertexs(v, 2);
@@ -72,6 +78,13 @@ void DrawRectLine(Rect & rect, GLuint vao, GLuint vertex, GLuint uv, GLuint ebo,
 	glDisableVertexAttribArray(1);
 	//关闭用线框模式绘图
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+}
+
+void DrawFont(Font font, GLuint vao, GLuint vertex, GLuint uv, GLuint ebo, GLuint shader) {
+	for each (Font::FontItem var in font.childs)
+	{
+		DrawFontItem(var, font.color, vao, vertex, uv, ebo, shader);
+	}
 }
 
 void DrawFontItem(Font::FontItem item,vec3 color, GLuint vao, GLuint vertex, GLuint uv, GLuint ebo,GLuint shader) {
