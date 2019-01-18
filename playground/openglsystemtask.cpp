@@ -9,6 +9,7 @@
 #include"playground/customOpengl/DrawFont.h"
 #include"playground/customOpengl/DrawText.h"
 #include"playground/customOpengl/ProcessPic.h"
+#include"playground/customOpengl/TransformRect.h"
 bool OpenglSystemTask::Run() {
 	IOpenglTask *task;
 	//ÊµÀý»¯task
@@ -19,7 +20,8 @@ bool OpenglSystemTask::Run() {
 	//task = new DrawSomePictures();
 	//task = new DrawFont();
 	//task = new DrawText();
-	task = new ProcessPic();
+	//task = new ProcessPic();
+	task = new TranformRect();
 	task->Start();
 
 	do {
