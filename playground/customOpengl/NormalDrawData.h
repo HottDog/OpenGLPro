@@ -2,6 +2,7 @@
 #include<vector>
 #include"playground/shape/rect.h"
 #include"common/opengltool.h"
+#include"playground/data/vertexs.h"
 using namespace std;
 struct NormalDrawData {
 public :

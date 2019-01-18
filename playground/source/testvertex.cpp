@@ -19,5 +19,5 @@ bool TestVertex::Run() {
 	//°ÑVBO°ó¶¨µ½VAO
 	VAOBindBuffer(VAO, VBO, 0);
 
-
+	return true;
 }
