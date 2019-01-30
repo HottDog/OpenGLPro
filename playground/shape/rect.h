@@ -4,6 +4,8 @@
 #include"playground/data/point.h"
 #include <math.h>
 #include"playground/util/mathutil.h"
+#include <glm/glm.hpp>
+using namespace glm;
 //矩形
 //坐标系是左上角是原点，屏幕尺寸是1024*768
 //关于旋转,默认绕(x,y)旋转,顺时针旋转
@@ -29,15 +31,15 @@ public :
 	
 	float angle = 0;  //角度度数
 	TexFillType texFillType = Fill;
-	char * image;
-
+	char * image = "res/white.jpg";
+	vec3 color = vec3(1.0f,1.0f,1.0f);
 	Point topLeft;
 	Point topRight;
 	Point bottomRight;
 	Point bottomLeft;
 
 	void Process();
-
+	vec3 RandomColor();
 private:	
 	
 	Indexs CreateIndexs();
@@ -47,4 +49,6 @@ private:
 	UVs GetFillUVs();
 
 	UVs GetRelaUVs();
+
+	
 };

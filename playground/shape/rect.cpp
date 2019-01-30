@@ -15,6 +15,7 @@ Rect::Rect(float x, float y, float w, float h) {
 	Rect::h = h;
 	Rect::x = x;
 	Rect::y = y;
+	
 }
 
 vector<Triangle> Rect::Convert() {
@@ -103,6 +104,14 @@ void Rect::Process() {
 	bottomLeft.x = x;
 	bottomLeft.y = y + h;
 	bottomLeft = GetRotatePoint(bottomLeft, topLeft, angle);
+}
+
+vec3 Rect::RandomColor() {
+	vec3 result;
+	result.x = Random();
+	result.y = Random();
+	result.z = Random();
+	return result;
 }
 
 //平面坐标旋转计算公式：

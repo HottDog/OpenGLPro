@@ -1,5 +1,6 @@
 #pragma once
 #include"playground/normaltask.h"
+#include"playground/shape/rect.h"
 class DrawSomePictures :public NormalTask {
 public:
 	DrawSomePictures();
@@ -16,4 +17,9 @@ private:
 	GLuint UV;
 	GLuint EBO;
 	GLuint texture;
+
+	Rect rect1;
+	Rect rect2;
+	Rect rect3;
+	Rect rect4;
 };

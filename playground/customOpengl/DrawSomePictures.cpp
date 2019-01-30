@@ -15,21 +15,33 @@ bool DrawSomePictures::Start() {
 	EBO = CreateEBO(1);
 	texture = CreateTexture(1);
 
+	rect1= Rect(100, 100, 100, 100);
+	rect1.image = "res/container.jpg";
+
+	rect2= Rect(300, 100, 100, 100);
+	rect2.image = "res/wushi.jpg";
+
+	rect3= Rect(500, 100, 100, 100);
+	rect3.image = "res/yasuo.jpg";
+	rect3.color = rect3.RandomColor();
+
+	rect4 = Rect(300, 300, 200, 200);
+	rect4.color = rect4.RandomColor();
 	return true;
 }
 
 bool DrawSomePictures::Draw() {
-	Rect rect1(100, 100, 100, 100);
-	rect1.image = "res/container.jpg";
+	
 	DrawRect(rect1, VAO, VBO, UV, EBO, texture,shader);
 
-	Rect rect2(300, 100, 100, 100);
-	rect2.image = "res/wushi.jpg";
+	
 	DrawRect(rect2, VAO, VBO, UV, EBO, texture, shader);
 
-	Rect rect3(500, 100, 100, 100);
-	rect3.image = "res/yasuo.jpg";
+	
+	
 	DrawRect(rect3, VAO, VBO, UV, EBO, texture, shader);
+
+	DrawRect(rect4, VAO, VBO, UV, EBO, texture, shader);
 	return true;
 }
 
