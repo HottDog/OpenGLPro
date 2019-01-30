@@ -18,7 +18,7 @@ void PrintMat4(mat4 c) {
 	cout << "}"<<endl;
 }
 
-GLuint loadBMP_custom(const char * imagepath) {
+GLuint loadBMP(const char * imagepath) {
 	unsigned char header[54];   //Each BMP file begins by a 54-bytes header
 	unsigned int dataPos;     //Position in the file where the actual data begins
 	unsigned int width, height;

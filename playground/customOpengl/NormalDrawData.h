@@ -1,5 +1,8 @@
 #pragma once
 #include<vector>
+#include"playground/shape/rect.h"
+#include"common/opengltool.h"
+#include"playground/data/vertexs.h"
 #include"playground/util/DataUtil.h"
 using namespace std;
 struct NormalDrawData {

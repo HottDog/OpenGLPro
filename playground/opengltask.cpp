@@ -100,7 +100,7 @@ bool OpenglTask :: Run() {
 	glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(g_uv_buffer_data), g_uv_buffer_data, GL_STATIC_DRAW);
 	
-	GLuint texture = loadBMP_custom("uvtemplate.bmp");
+	GLuint texture = loadBMP("uvtemplate.bmp");
 	// Set our "myTextureSampler" sampler to use Texture Unit 0
 	GLuint textureID = glGetUniformLocation(programID, "myTextureSampler");
 
