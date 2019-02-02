@@ -106,14 +106,6 @@ void Rect::Process() {
 	bottomLeft = GetRotatePoint(bottomLeft, topLeft, angle);
 }
 
-vec3 Rect::RandomColor() {
-	vec3 result;
-	result.x = Random();
-	result.y = Random();
-	result.z = Random();
-	return result;
-}
-
 //平面坐标旋转计算公式：
 //平面坐标上,点(x1,y1)绕点(x2,y2)旋转θ之后的坐标(x,y)
 //x = (x1 - x2)*cos(θ) - (y1 - y2)*sin(θ) + x2;

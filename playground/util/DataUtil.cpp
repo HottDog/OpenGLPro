@@ -136,3 +136,10 @@ UVs RectsToUVs(vector<Rect>& rects) {
 	return uvs;
 }
 
+vec3 RandomColor() {
+	vec3 result;
+	result.x = Random();
+	result.y = Random();
+	result.z = Random();
+	return result;
+}

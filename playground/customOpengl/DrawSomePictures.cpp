@@ -1,5 +1,6 @@
 #include"playground/customOpengl/DrawSomePictures.h"
 #include"playground/util/DrawUtil.h"
+#include"playground/util/DataUtil.h"
 DrawSomePictures::DrawSomePictures() {
 
 }
@@ -23,10 +24,10 @@ bool DrawSomePictures::Start() {
 
 	rect3= Rect(500, 100, 100, 100);
 	rect3.image = "res/yasuo.jpg";
-	rect3.color = rect3.RandomColor();
+	rect3.color = RandomColor();
 
 	rect4 = Rect(300, 300, 200, 200);
-	rect4.color = rect4.RandomColor();
+	rect4.color = RandomColor();
 	return true;
 }
 

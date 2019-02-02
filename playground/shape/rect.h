@@ -39,7 +39,6 @@ public :
 	Point bottomLeft;
 
 	void Process();
-	vec3 RandomColor();
 private:	
 	
 	Indexs CreateIndexs();

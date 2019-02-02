@@ -1,5 +1,5 @@
 #include"RectPack.h"
-
+#include"playground/util/DataUtil.h"
 RectPack::RectPack() {
 
 }
@@ -10,9 +10,9 @@ bool RectPack::Start() {
 	ogdata.shader = GetDefaultShaderWithoutSuffix("DrawPicture");
 
 	Rect rect(100, 100, 100, 100);
-	rect.color = rect.RandomColor();
+	rect.color = RandomColor();
 	rects.push_back(rect);
-
+	      
 	return true;
 }
 
