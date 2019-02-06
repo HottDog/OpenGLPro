@@ -10,11 +10,9 @@ vec4 DisColored(vec4 color);
 //均值模糊采样
 vec4 MeanSample(sampler2D tex,vec2 uv);
 
-//高斯模糊采样
-vec4 GaussSamples(sampler2D tex,vec2 uv);
-
 float Gauss(float x);
 
+//高斯模糊采样
 vec4 GaussSample(sampler2D tex,vec2 uv);
 
 vec4 Sample(sampler2D tex,vec2 uv,float fstep,float prob);
