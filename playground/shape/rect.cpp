@@ -15,6 +15,7 @@ Rect::Rect(float x, float y, float w, float h) {
 	Rect::h = h;
 	Rect::x = x;
 	Rect::y = y;
+	
 }
 
 vector<Triangle> Rect::Convert() {

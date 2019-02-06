@@ -1,5 +1,6 @@
 #include"playground/util/DrawUtil.h"
 #include"playground/util/ShowUtil.h"
+#include"common/shadertool.h"
 void DrawMesh(Mesh & mesh, GLuint vao, GLuint vertex, GLuint uv) {
 
 }
@@ -26,6 +27,10 @@ void DrawRect(Rect & rect, GLuint vao, GLuint vertex, GLuint uv,GLuint ebo,GLuin
 	Indexs indexs = rect.GetMesh().indexs;
 	EBOBindData(ebo, indexs.datas, indexs.count * 4);
 	delete indexs.datas;
+
+	//设置颜色
+	SetShaderData(shader,"rectColor",rect.color);
+
 
 	//准备图片资源
 	int width, height, nrChannels;

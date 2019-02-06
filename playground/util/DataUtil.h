@@ -34,3 +34,5 @@ Vertexs PointsToVertexs(vector<Point>& points);
 UVs PointsToUVs(vector<Point2D>& points);
 
 UVs RectsToUVs(vector<Rect>& rects);
+
+vec3 RandomColor();

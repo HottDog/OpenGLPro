@@ -1,7 +1,6 @@
 #pragma once
 #include"playground/data/point.h"
 #include"common/globalconfig.h"
-#include <math.h>
 //获取点a和b的s等分点p的坐标，s = |ap|/|pb|
 Point GetDividePoint(Point& a, Point& b, float s);
 
@@ -11,3 +10,9 @@ Point GetDividePoint(Point& a, Point& b, float s);
 //y = (x1 - x2)*sin(θ) + (y1 - y2)*cos(θ) + y2;
 //获取点a绕点b顺时针旋转angle后的坐标
 Point GetRotatePoint(Point&a, Point & b, float angle);
+
+//返回a-b之间的随机整数，包含a和b
+int Random(int a, int b);
+
+//返回0-1之间的浮点数
+double Random();

@@ -10,6 +10,9 @@ protected:
 
 private:
 	mat4 tranform = mat4(1.0f);
+	mat4 model;
+	mat4 view;
+	mat4 projection;
 	double speed = 20.0 / HEIGHT;
 	double h = 0;
 };
