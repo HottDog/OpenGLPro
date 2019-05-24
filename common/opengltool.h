@@ -8,7 +8,7 @@
 #include<iostream>
 #include"common/shader.hpp"
 #include"common/globalconfig.h"
-#include"playground/tool.h"
+#include"playground/entity/util/tool.h"
 #include<string>
 #include<vector>
 #include"common/stb_image.h"
@@ -23,6 +23,8 @@ struct RectOG {
 	GLuint uv;
 	GLuint index;
 	GLuint texture;
+	GLuint texture2;
+	GLuint texture3;
 };
 
 struct Character{
@@ -77,6 +79,8 @@ mat4 GetBaseMVP();
 GLuint GetDefaultShaderWithoutSuffix(char * shadername);
 
 map<GLchar, Character> LoadFont(char * fontpath = "res/Fonts/arial.ttf");
+
+void InitRectOG(RectOG & rectOG);
 
 void DeleteRectOG(RectOG & rectOG);
 

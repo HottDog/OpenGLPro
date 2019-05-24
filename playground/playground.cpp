@@ -1,15 +1,15 @@
-#include"itask.h"
-#include"opengltask.h"
+#include"playground/system/itask.h"
+#include"playground/entity/customOpengl/opengltask.h"
 #include<iostream>
-#include"othertask.h"
-#include"opengltask1.h"
-#include"customOpengl/beginopengl.h"
-#include"playground/customOpengl/testvertex.h"
-#include"testtask.h"
-#include"playground/core/openglsystem.h"
-#include"draw/drawentity.h"
-#include"iopengltask.h"
-#include"playground/openglsystemtask.h"
+#include"playground/entity/customOpengl/othertask.h"
+#include"playground/entity/customOpengl/opengltask1.h"
+#include"playground/entity/customOpengl//beginopengl.h"
+#include"playground/entity/customOpengl/testvertex.h"
+#include"playground/entity/customOpengl/testtask.h"
+#include"playground/system/core/openglsystem.h"
+#include"playground/system/draw/drawentity.h"
+#include"playground/system/iopengltask.h"
+#include"playground/entity/openglsystemtask.h"
 using namespace OpenGL;
 int main( void )
 {

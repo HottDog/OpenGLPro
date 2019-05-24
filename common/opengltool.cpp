@@ -211,6 +211,15 @@ map<GLchar, Character> LoadFont(char * fontpath ) {
 	return result;
 }
 
+void InitRectOG(RectOG & ogdata)
+{
+	ogdata.vao = CreateVAO(1);
+	ogdata.vertex = CreateVBO(1);
+	ogdata.uv = CreateVBO(1);
+	ogdata.index = CreateEBO(1);
+	ogdata.texture = CreateTexture(1);
+}
+
 void DeleteRectOG(RectOG & ogdata) {
 	glDeleteBuffers(1, &ogdata.vertex);
 	glDeleteBuffers(1, &ogdata.uv);
