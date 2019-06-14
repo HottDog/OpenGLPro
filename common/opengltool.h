@@ -78,7 +78,8 @@ mat4 GetBaseMVP();
 
 GLuint GetDefaultShaderWithoutSuffix(char * shadername);
 
-map<GLchar, Character> LoadFont(char * fontpath = "res/Fonts/arial.ttf");
+map<GLchar, Character> LoadFont(char * fontpath = "res/font/arial.ttf");
+
 
 void InitRectOG(RectOG & rectOG);
 

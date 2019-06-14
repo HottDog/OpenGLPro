@@ -20,6 +20,9 @@ public :
 	static int ID ;
 
 	Rect();
+	// 参数说明：
+	// x,y 左上角坐标
+	// w 为宽度 , h 为高度
 	Rect(float x, float y, float w, float h);
 	int id;
 	vector<Triangle> Convert();
@@ -39,7 +42,8 @@ public :
 	Point bottomLeft;
 
 	void Process();
-private:	
+
+	void Rotate();	
 	
 	Indexs CreateIndexs();
 	//Point Rotate(Point& t, float a);

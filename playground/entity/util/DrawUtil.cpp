@@ -2,6 +2,8 @@
 #include"playground/entity/util/ShowUtil.h"
 #include"common/shadertool.h"
 #include"common/opengltool.h"
+#include"playground/entity/runtime/RunTime.h"
+#include"playground/data/util/DataUtil.h"
 void DrawMesh(Mesh & mesh, RectOG ogObj) {
 	glUseProgram(ogObj.shader);
 	Vertexs v = mesh.vertexs;
@@ -31,37 +33,52 @@ void DrawMesh(Mesh & mesh, RectOG ogObj) {
 	glDisableVertexAttribArray(1);
 }
 
-void DrawRect(Rect & rect, RectOG& ogdata) {
-	DrawRect(rect, ogdata.vao, ogdata.vertex, ogdata.uv, ogdata.index, ogdata.texture,ogdata.shader);
+void DrawRects(vector<Rect> rects, RectOG ogdata)
+{
+	vector<Mesh> meshs;
+	for (int i = 0; i < rects.size(); i++)
+	{
+		meshs.push_back(rects[i].GetMesh());
+	}
+	DrawRect(MergeMesh(meshs), rects[0].color, rects[0].image, ogdata.vao, ogdata.vertex, ogdata.uv, ogdata.index, ogdata.texture, ogdata.shader);
 }
 
-void DrawRect(Rect & rect, GLuint vao, GLuint vertex, GLuint uv,GLuint ebo,GLuint texture,GLuint shader) {
+void DrawRect(Rect & rect, RectOG& ogdata) {
+	DrawRect(rect.GetMesh(),rect.color,rect.image, ogdata.vao, ogdata.vertex, ogdata.uv, ogdata.index, ogdata.texture,ogdata.shader);
+}
+
+void DrawRect(Rect & rect, GLuint vao, GLuint vertex, GLuint uv, GLuint ebo, GLuint texture, GLuint shader)
+{
+	DrawRect(rect.GetMesh(), rect.color, rect.image, vao,vertex, uv, ebo, texture, shader);
+}
+
+void DrawRect(Mesh & mesh,vec3& color,char * image, GLuint vao, GLuint vertex, GLuint uv,GLuint ebo,GLuint texture,GLuint shader) {
 	glUseProgram(shader);
 
-	Vertexs v = rect.GetMesh().vertexs;
+	Vertexs v = mesh.vertexs;
 	VBOBindData(vertex, v.datas, v.count * 4);
 	//PrintVertexs(v, 2);
 	delete v.datas;
 	VAOBindBuffer(vao, vertex, 0);
 	
-	UVs uvs = rect.GetMesh().uvs;
+	UVs uvs = mesh.uvs;
 	VBOBindData(uv, uvs.datas, uvs.count * 4);
 	//PrintVertexs(uvs, 1);
 	delete uvs.datas;
 	VAOBindBuffer(vao, uv, 1, 2);
 
-	Indexs indexs = rect.GetMesh().indexs;
+	Indexs indexs = mesh.indexs;
 	EBOBindData(ebo, indexs.datas, indexs.count * 4);
 	delete indexs.datas;
 
 	//设置颜色
-	SetShaderData(shader,"rectColor",rect.color);
+	SetShaderData(shader,"rectColor",color);
 
 
 	//准备图片资源
 	int width, height, nrChannels;
 	stbi_set_flip_vertically_on_load(true);
-	unsigned char * data = stbi_load(rect.image, &width, &height, &nrChannels, 0);
+	unsigned char * data = stbi_load(image, &width, &height, &nrChannels, 0);
 	TextureBindData(texture, 0, width, height, data);
 	stbi_image_free(data);   //释放图片数据内存
 	// 为当前绑定的纹理对象设置环绕、过滤方式
@@ -84,13 +101,13 @@ void DrawRectLine(Rect & rect, GLuint vao, GLuint vertex, GLuint uv, GLuint ebo,
 	glUseProgram(shader);
 	Vertexs v = rect.GetMesh().vertexs;
 	VBOBindData(vertex, v.datas, v.count * 4);
-	PrintVertexs(v, 2);
+	//PrintVertexs(v, 2);
 	delete v.datas;
 	VAOBindBuffer(vao, vertex, 0);
 
 	UVs uvs = rect.GetMesh().uvs;
 	VBOBindData(uv, uvs.datas, uvs.count * 4);
-	PrintVertexs(uvs, 1);
+	//PrintVertexs(uvs, 1);
 	delete uvs.datas;
 	VAOBindBuffer(vao, uv, 1, 2);
 
@@ -111,7 +128,14 @@ void DrawRectLine(Rect & rect, GLuint vao, GLuint vertex, GLuint uv, GLuint ebo,
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
-void DrawFont(Font font, GLuint vao, GLuint vertex, GLuint uv, GLuint ebo, GLuint shader) {
+void DrawFont(Font& font, RectOG& ogdata)
+{	
+	ogdata.shader = GetDefaultShaderWithoutSuffix("Font");
+	font.Init(LoadFont());
+	DrawFont(font, ogdata.vao, ogdata.vertex, ogdata.uv, ogdata.index, ogdata.shader);
+}
+
+void DrawFont(Font& font, GLuint vao, GLuint vertex, GLuint uv, GLuint ebo, GLuint shader) {
 	for each (Font::FontItem var in font.childs)
 	{
 		DrawFontItem(var, font.color, vao, vertex, uv, ebo, shader);
@@ -126,13 +150,13 @@ void DrawFontItem(Font::FontItem item,vec3 color, GLuint vao, GLuint vertex, GLu
 
 	Vertexs v = rect.GetMesh().vertexs;
 	VBOBindData(vertex, v.datas, v.count * 4);
-	PrintVertexs(v, 2);
+	//PrintVertexs(v, 2);
 	delete v.datas;
 	VAOBindBuffer(vao, vertex, 0);
 
 	UVs uvs = rect.GetMesh().uvs;
 	VBOBindData(uv, uvs.datas, uvs.count * 4);
-	PrintVertexs(uvs, 1);
+	//PrintVertexs(uvs, 1);
 	delete uvs.datas;
 	VAOBindBuffer(vao, uv, 1, 2);
 

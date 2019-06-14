@@ -16,3 +16,8 @@ int Random(int a, int b);
 
 //返回0-1之间的浮点数
 double Random();
+
+//向量点乘
+float Dot(Point p1, Point p2);
+
+float Cross(Point p1, Point p2);

@@ -3,4 +3,6 @@
 class OpenglSystemTask : public ITask {
 public :
 	bool Run();
+
+	bool Init();
 };

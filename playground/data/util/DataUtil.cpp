@@ -143,3 +143,43 @@ vec3 RandomColor() {
 	result.z = Random();
 	return result;
 }
+
+Mesh MergeMesh(vector<Mesh> meshs)
+{
+	Mesh result;
+	int vertexSize = 0;
+	int uvSize = 0;
+	int indexSize = 0;
+	for (int i = 0; i < meshs.size(); i++)
+	{
+		vertexSize += meshs[i].vertexs.count;
+		uvSize += meshs[i].uvs.count;
+		indexSize += meshs[i].indexs.count;
+	}
+	result.vertexs.datas = new float[vertexSize];
+	result.vertexs.count = 0;
+	result.uvs.datas = new float[uvSize];
+	result.uvs.count = 0;
+	result.indexs.datas = new unsigned int[indexSize];
+	result.indexs.count = 0;
+	for (int i = 0;i< meshs.size(); i++)
+	{
+		//vertex
+		for (int j = 0; j < meshs[i].vertexs.count; j++)
+		{
+			result.vertexs.datas[result.vertexs.count] = meshs[i].vertexs.datas[j];
+			result.vertexs.count++;
+		}
+		for (int j = 0; j < meshs[i].uvs.count; j++)
+		{
+			result.uvs.datas[result.uvs.count] = meshs[i].uvs.datas[j];
+			result.uvs.count++;
+		}
+		for (int j = 0; j < meshs[i].indexs.count; j++)
+		{
+			result.indexs.datas[result.indexs.count] = meshs[i].indexs.datas[j];
+			result.indexs.count++;
+		}
+	}
+	return result;
+}

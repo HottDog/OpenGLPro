@@ -13,6 +13,7 @@ bool RectTask::Start() {
 	ogdata.uv = CreateVBO(1);
 	ogdata.index = CreateEBO(1);
 	ogdata.texture = CreateTexture(1);
+	ogdata.shader = GetDefaultShaderWithoutSuffix("DrawPicture");
 	return true;
 }
 

@@ -12,18 +12,20 @@ bool LightTest::Start()
 	InitRectOG(ogObj);
 	ogObj.shader = GetDefaultShaderWithoutSuffix("uv_color");
 	Vertexs v;
+	return true;
 }
 
 bool LightTest::Draw()
 {
 	NormalTask::Draw();
 	glUseProgram(ogObj.shader);
-	DrawMesh()
-
 	
+
+	return true;
 }
 
 bool LightTest::Destroy()
 {
 	NormalTask::Destroy();
+	return true;
 }

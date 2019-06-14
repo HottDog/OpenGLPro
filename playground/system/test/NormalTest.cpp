@@ -1,6 +1,6 @@
 #include"NormalTest.h"
 #include<iostream>
-#include"DataTest.h"
+#include"playground/entity/test/DataTest.h"
 using namespace std;
 void NormalTest::Start() {
 	DataTest datatest;

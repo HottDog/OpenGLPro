@@ -12,4 +12,7 @@ struct Point
 	float x = 0;
 	float y = 0;
 	float z = 0;
+	Point();
+	Point(float x, float y, float z);
+	Point operator +(const Point& point);
 };

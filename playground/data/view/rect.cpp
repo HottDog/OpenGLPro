@@ -87,23 +87,27 @@ UVs Rect::GetRelaUVs() {
 	return PointsToUVs(points);
 }
 
+void Rect::Rotate()
+{
+	topLeft = GetRotatePoint(topLeft, topLeft, angle);
+	topRight = GetRotatePoint(topRight, topLeft, angle);
+	bottomRight = GetRotatePoint(bottomRight, topLeft, angle);
+	bottomLeft = GetRotatePoint(bottomLeft, topLeft, angle);
+}
 
 void Rect::Process() {
 	topLeft.x =x;
 	topLeft.y = y;
-	topLeft = GetRotatePoint(topLeft, topLeft, angle);
-
+	
 	topRight.x = x + w;
 	topRight.y = y;
-	topRight = GetRotatePoint(topRight, topLeft, angle);
-
+	
 	bottomRight.x = x + w;
 	bottomRight.y = y + h;
-	bottomRight = GetRotatePoint(bottomRight, topLeft, angle);
-
+	
 	bottomLeft.x = x;
-	bottomLeft.y = y + h;
-	bottomLeft = GetRotatePoint(bottomLeft, topLeft, angle);
+	bottomLeft.y = y + h;	
+	Rotate();
 }
 
 //平面坐标旋转计算公式：

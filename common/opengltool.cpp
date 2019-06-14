@@ -97,7 +97,7 @@ void EBOBindData(GLuint ebo, const unsigned int* data, int size) {
 GLuint CreateTexture(int index) {
 	GLuint texture;
 	glGenTextures(index, &texture);
-	cout << "Texture(id):" << texture << endl;
+	//cout << "Texture(id):" << texture << endl;
 	return texture;
 }
 
@@ -157,7 +157,7 @@ map<GLchar, Character> LoadFont(char * fontpath ) {
 		return result;
 	}
 	FT_Face face;
-	if (FT_New_Face(ft, "res/Fonts/arial.ttf", 0, &face)) {
+	if (FT_New_Face(ft, fontpath, 0, &face)) {
 		cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
 		return result;
 	}

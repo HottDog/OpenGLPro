@@ -25,3 +25,8 @@ int Random(int a, int b) {
 double Random() {
 	return rand() / double(RAND_MAX);
 }
+
+float Dot(Point p1, Point p2)
+{
+	return p1.x*p2.x + p1.y*p2.y;
+}

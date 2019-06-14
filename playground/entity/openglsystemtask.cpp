@@ -15,6 +15,9 @@
 #include<math.h>
 #include <time.h>
 #include"playground/entity/customOpengl/RectPack.h"
+#include"playground/entity/cg/DivisionConcavePolygon.h"
+#include"playground/entity/runtime/RunTime.h"
+#include"playground/entity/cg/DrawChessBoard.h"
 bool OpenglSystemTask::Run() {
 	IOpenglTask *task;
 	//ÊµÀý»¯task
@@ -25,9 +28,11 @@ bool OpenglSystemTask::Run() {
 	//task = new DrawSomePictures();
 	//task = new DrawSomeFont();
 	//task = new DrawText();
-	task = new ProcessPic();
+	//task = new ProcessPic();
+	//task = new DivisionConcavePolygon();
+	task = new DrawChessBoard();
 	//task = new RectPack();
-	srand((unsigned)time(NULL));
+	Init();
 	//task = new TranformRect();
 	task->Start();
 	NormalTest test;
@@ -43,5 +48,12 @@ bool OpenglSystemTask::Run() {
 	test.Destroy();
 	delete(task);
 
+	return true;
+}
+
+bool OpenglSystemTask::Init()
+{
+	srand((unsigned)time(NULL));
+	RunTime::fontRes.insert(pair<string, map<GLchar, Character>>("arial", LoadFont()));
 	return true;
 }

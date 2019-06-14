@@ -26,7 +26,7 @@ public:
 	vec3 color = vec3(1,0,0);   //默认是红色
 	vector<FontItem> childs;
 	int size = 20;
-
+	string fontname = "arial";   //字体名字
 	void CreateAllChilds(map<GLchar, Character>& characters);
 	void Init(map<GLchar, Character>& characters);
 private:

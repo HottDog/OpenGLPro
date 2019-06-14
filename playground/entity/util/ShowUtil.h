@@ -1,5 +1,5 @@
 #pragma once
-#include"playground/data/vertexs.h"
+#include"playground/data/mesh/vertexs.h"
 #include<iostream>
 #include <iomanip>
 using namespace std;
