@@ -68,6 +68,7 @@ void DrawRect(Mesh & mesh,vec3& color,char * image, GLuint vao, GLuint vertex, G
 	VAOBindBuffer(vao, uv, 1, 2);
 
 	Indexs indexs = mesh.indexs;
+	int indexsNum = indexs.count;
 	EBOBindData(ebo, indexs.datas, indexs.count * 4);
 	delete indexs.datas;
 
@@ -90,28 +91,45 @@ void DrawRect(Mesh & mesh,vec3& color,char * image, GLuint vao, GLuint vertex, G
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)0);
+	glDrawElements(GL_TRIANGLES, indexsNum, GL_UNSIGNED_INT, (void*)0);
 	GLenum en = glGetError();
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
 }
 
-void DrawRectLine(Rect & rect, GLuint vao, GLuint vertex, GLuint uv, GLuint ebo, GLuint shader) {
+void DrawRectLines(vector<Rect> & rects, RectOG& ogdata)
+{
+	vector<Mesh> meshs;
+	for (int i = 0; i < rects.size(); i++)
+	{
+		meshs.push_back(rects[i].GetMesh());
+	}
+	DrawRectLines(MergeMesh(meshs), ogdata.vao, ogdata.vertex, ogdata.uv, ogdata.index, ogdata.shader);
+}
+
+void DrawRectLines(Rect & rect, GLuint vao, GLuint vertex, GLuint uv, GLuint ebo, GLuint shader)
+{
+	DrawRectLines(rect.GetMesh(), vao, vertex, uv, ebo, shader);
+}
+
+void DrawRectLines(Mesh & mesh, GLuint vao, GLuint vertex, GLuint uv, GLuint ebo, GLuint shader) {
 	//
+	shader = GetDefaultShaderWithoutSuffix("test");
 	glUseProgram(shader);
-	Vertexs v = rect.GetMesh().vertexs;
+	Vertexs v = mesh.vertexs;
 	VBOBindData(vertex, v.datas, v.count * 4);
 	//PrintVertexs(v, 2);
 	delete v.datas;
 	VAOBindBuffer(vao, vertex, 0);
 
-	UVs uvs = rect.GetMesh().uvs;
+	UVs uvs = mesh.uvs;
 	VBOBindData(uv, uvs.datas, uvs.count * 4);
 	//PrintVertexs(uvs, 1);
 	delete uvs.datas;
 	VAOBindBuffer(vao, uv, 1, 2);
 
-	Indexs indexs = rect.GetMesh().indexs;
+	Indexs indexs = mesh.indexs;
+	int num = mesh.indexs.count;
 	EBOBindData(ebo, indexs.datas, indexs.count * 4);
 	delete indexs.datas;
 
@@ -119,7 +137,7 @@ void DrawRectLine(Rect & rect, GLuint vao, GLuint vertex, GLuint uv, GLuint ebo,
 	glEnableVertexAttribArray(1);
 	//用线框模式绘图
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)0);
+	glDrawElements(GL_TRIANGLES, num, GL_UNSIGNED_INT, (void*)0);
 	GLenum en = glGetError();
 	
 	glDisableVertexAttribArray(0);

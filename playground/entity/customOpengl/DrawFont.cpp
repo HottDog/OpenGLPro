@@ -43,7 +43,7 @@ bool DrawSomeFont::Draw() {
 
 	int count = font.content.size();
 	for (int i = 0; i < count; i++) {
-		DrawRectLine(Rect(font.base.x + i * font.base.w, font.base.y, font.base.w, font.base.h), VAO,
+		DrawRectLines(Rect(font.base.x + i * font.base.w, font.base.y, font.base.w, font.base.h), VAO,
 			VBO, UV, EBO, lineShader);
 	}
 	

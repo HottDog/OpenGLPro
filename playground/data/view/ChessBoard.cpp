@@ -45,18 +45,23 @@ void ChessBoard::ProcessRects()
 
 void ChessBoard::DiffRectsWithColor()
 {
+	diffRects.clear();
 	for (int i = 0; i < height; i++)
 	{
 		for (int j = 0; j < width; j++)
 		{
 			vec3 color = colors[i][j];
-			if(diffRects.find(color) ==diffRects.end())
-			{
-				vector<Rect> rectsTmp;
-				//Ã»ÓÐkey
-				diffRects.insert(pair<vec3, vector<Rect>>(color, rectsTmp));
-			}
-			diffRects[color].push_back(rects[j + i * width]);
+			InsertRect(diffRects, color, rects[j + i * width]);
 		}
 	}
+}
+
+void ChessBoard::SetColor(int w, int h, vec3 c)
+{
+	w = w - 1;
+	//h = h - 1;
+	//w = width - w;
+	h = height - h;
+	colors[h][w] = c;
+	rects[w + h * width].color = c;
 }

@@ -177,7 +177,7 @@ Mesh MergeMesh(vector<Mesh> meshs)
 		}
 		for (int j = 0; j < meshs[i].indexs.count; j++)
 		{
-			result.indexs.datas[result.indexs.count] = meshs[i].indexs.datas[j];
+			result.indexs.datas[result.indexs.count] = meshs[i].indexs.datas[j]+4*i;
 			result.indexs.count++;
 		}
 	}
