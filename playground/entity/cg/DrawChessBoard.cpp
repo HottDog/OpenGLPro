@@ -12,6 +12,8 @@ DrawChessBoard::DrawChessBoard()
 bool DrawChessBoard::Start()
 {
 	RectTask::Start();
+	lineshader = GetDefaultShaderWithoutSuffix("test");
+	rectshader = ogdata.shader;
 	chess = ChessBoard(vec2(250,90));
 	//chess.SetColor(100, 100, Color::WHITE);
 	//chess.SetColor(100, 1, Color::GREEN);
@@ -39,7 +41,8 @@ bool DrawChessBoard::Start()
 	//Bresenham(chess, vec2(4, 2), vec2(8, 23));
 	//Bresenham(chess, vec2(18, 6), vec2(4, 2));
 	//Bresenham(chess, vec2(4, 2), vec2(18, 6));
-	Bresenham(chess, vec2(15,15),10);
+	//Bresenham(chess, vec2(15,15),5);
+	CutoffLine();
 	chess.DiffRectsWithColor();
 	return true;
 }
@@ -47,10 +50,12 @@ bool DrawChessBoard::Start()
 bool DrawChessBoard::Draw()
 {
 	RectTask::Draw();
+	ogdata.shader = rectshader;
 	for(int i =0 ;i<chess.diffRects.size();i++)
-	{
+	{  
 		DrawRects(chess.diffRects[i].rects, ogdata);
 	}
+	ogdata.shader = lineshader;
 	DrawRectLines(chess.rects, ogdata);
 	return true;
 }
@@ -59,4 +64,19 @@ bool DrawChessBoard::Destroy()
 {
 	RectTask::Destroy();
 	return true;
+}
+
+void DrawChessBoard::CutoffLine()
+{
+	//绘制一条线段
+	Bresenham(chess, vec2(8, 23), vec2(4, 2));
+	//绘制一个裁剪矩形框
+	int xmin = 3;
+	int xmax = 15;
+	int ymin = 10;
+	int ymax = 20;
+	Bresenham(chess, vec2(xmin, ymin), vec2(xmin, ymax));
+	Bresenham(chess, vec2(xmin, ymax), vec2(xmax, ymax));
+	Bresenham(chess, vec2(xmax, ymin), vec2(xmax, ymax));
+	Bresenham(chess, vec2(xmax, ymin), vec2(xmin, ymin));
 }

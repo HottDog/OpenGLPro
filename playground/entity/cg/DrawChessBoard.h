@@ -12,4 +12,8 @@ protected:
 	virtual bool Destroy();
 private:
 	ChessBoard chess;
+	GLint rectshader;
+	GLint lineshader;
+
+	void CutoffLine();
 };

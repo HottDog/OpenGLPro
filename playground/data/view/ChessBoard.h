@@ -24,6 +24,7 @@ public:
 	//按颜色将所有的矩形进行分类
 	void DiffRectsWithColor();
 	void SetColor(int w, int h, vec3 c = Color::GREEN);
+	void SetColors(vec2 * datas, int length, vec3 c = Color::GREEN);
 private :
 	void InitColors();
 	void ProcessRects();

@@ -39,6 +39,45 @@ void DDA(ChessBoard& chess,vec2 start,vec2 end)
 
 }
 
+void DDA(vec2 *& data, int & length, vec2 start, vec2 end)
+{
+	//先取整
+	int startx = round(start.x);
+	int starty = round(start.y);
+	int endx = round(end.x);
+	int endy = round(end.y);
+	float ky = float(endy - starty);
+	float kx = float(endx - startx);
+	float k;
+	float dx, dy;
+	int num;
+	length = num + 1;
+	data = new vec2[length];
+	if (fabs(ky) > fabs(kx))
+	{
+		//y增
+		dx = kx / fabs(ky);  //可能比较耗
+		dy = endy > starty ? 1 : -1;
+		num = abs(endy - starty);
+	}
+	else
+	{
+		dx = endx > startx ? 1 : -1;
+		dy = ky / fabs(kx);   //可能比较耗
+		num = abs(endx - startx);
+	}
+	//渲染起始点
+	data[0] = vec2(startx, starty);
+	float x = startx;
+	float y = starty;
+	for (int i = 0; i < num; i++)
+	{
+		x += dx;
+		y += dy;
+		data[i+1] = vec2(round(x), round(y));
+	}
+}
+
 void Bresenham(ChessBoard& chess, vec2 start, vec2 end)
 {
 	//先取整
@@ -59,14 +98,14 @@ void Bresenham(ChessBoard& chess, vec2 start, vec2 end)
 		{
 			if (endx >= startx)
 			{
-				result = BresenhamY(chess, startx, starty, endx, endy);
+				BresenhamY(result,num, startx, starty, endx, endy);
 			}
 			else
 			{
 				isSymX = true;
 				int tempstarty = endy + abs(endy - starty);
 				symValue = endy;
-				result = BresenhamY(chess, endx, endy, startx, tempstarty);				
+				BresenhamY(result, num, endx, endy, startx, tempstarty);
 			}
 			
 		}
@@ -79,11 +118,11 @@ void Bresenham(ChessBoard& chess, vec2 start, vec2 end)
 				isSymX = true;
 				int tempendy = starty + abs(endy - starty);
 				symValue = starty;
-				result = BresenhamY(chess, startx, starty, endx, tempendy);
+				BresenhamY(result, num, startx, starty, endx, tempendy);
 			}
 			else
 			{
-				result = BresenhamY(chess, endx, endy, startx, starty);
+				BresenhamY(result, num, endx, endy, startx, starty);
 			}
 			
 		}
@@ -96,14 +135,14 @@ void Bresenham(ChessBoard& chess, vec2 start, vec2 end)
 		{
 			if (endx >= startx)
 			{
-				result = BresenhamX(chess, startx, starty, endx, endy);
+				BresenhamX(result, num, startx, starty, endx, endy);
 			}
 			else
 			{
 				isSymX = true;
 				int tempstarty = endy + abs(endy - starty);
 				symValue = endy;
-				result = BresenhamX(chess, endx, endy, startx, tempstarty);
+				BresenhamX(result, num, endx, endy, startx, tempstarty);
 			}
 		}
 		else
@@ -115,12 +154,12 @@ void Bresenham(ChessBoard& chess, vec2 start, vec2 end)
 				isSymX = true;
 				int tempendy = starty + abs(endy - starty);
 				symValue = starty;
-				result = BresenhamX(chess, startx, starty, endx, tempendy);
+				BresenhamX(result, num, startx, starty, endx, tempendy);
 			}
 			else
 			{
 				
-				result = BresenhamX(chess, endx, endy, startx, starty);
+				BresenhamX(result, num, endx, endy, startx, starty);
 			}
 		}
 	}
@@ -138,15 +177,121 @@ void Bresenham(ChessBoard& chess, vec2 start, vec2 end)
 	}
 }
 
-vec2 * BresenhamX(ChessBoard& chess, int startx, int starty, int endx, int endy)
+void Bresenham(vec2 * data, int & length, vec2 start, vec2 end)
+{
+	//先取整
+	int startx = round(start.x);
+	int starty = round(start.y);
+	int endx = round(end.x);
+	int endy = round(end.y);
+	int dx = endx - startx;
+	int dy = endy - starty;
+	int num = 0;
+	bool isSymX = false;
+	int symValue = 0;
+	vec2 * result = nullptr;
+	if (fabs(dy) > fabs(dx))
+	{
+		num = abs(dy);
+		if (endy >= starty)
+		{
+			if (endx >= startx)
+			{
+				BresenhamY(result, num, startx, starty, endx, endy);
+			}
+			else
+			{
+				isSymX = true;
+				int tempstarty = endy + abs(endy - starty);
+				symValue = endy;
+				BresenhamY(result, num, endx, endy, startx, tempstarty);
+			}
+
+		}
+		else
+		{
+
+			if (endx >= startx)
+			{
+				//先算出跟x = startx轴对称的线段，然后再对称回来
+				isSymX = true;
+				int tempendy = starty + abs(endy - starty);
+				symValue = starty;
+				BresenhamY(result, num, startx, starty, endx, tempendy);
+			}
+			else
+			{
+				BresenhamY(result, num, endx, endy, startx, starty);
+			}
+
+		}
+
+	}
+	else
+	{
+		num = abs(dx);
+		if (endy >= starty)
+		{
+			if (endx >= startx)
+			{
+				BresenhamX(result, num, startx, starty, endx, endy);
+			}
+			else
+			{
+				isSymX = true;
+				int tempstarty = endy + abs(endy - starty);
+				symValue = endy;
+				BresenhamX(result, num, endx, endy, startx, tempstarty);
+			}
+		}
+		else
+		{
+
+			//先算出跟x = startx轴对称的线段，然后再对称回来
+			if (endx >= startx)
+			{
+				isSymX = true;
+				int tempendy = starty + abs(endy - starty);
+				symValue = starty;
+				BresenhamX(result, num, startx, starty, endx, tempendy);
+			}
+			else
+			{
+
+				BresenhamX(result, num, endx, endy, startx, starty);
+			}
+		}
+	}
+	length = num;
+	data = new vec2[length];
+	for (int i = 0; i < num; i++)
+	{
+		if (isSymX)
+		{
+			int tempy = symValue - abs(result[i].y - symValue);
+			data[i] = vec2(result[i].x, tempy);
+		}
+		else
+		{
+			data[i] = vec2(result[i].x, result[i].y);
+		}
+	}
+	if (result != nullptr)
+	{
+		delete result;
+	}	
+}
+
+void BresenhamX(vec2* &result,int & length, int startx, int starty, int endx, int endy)
 {
 	int dx = endx - startx;
 	int dy = endy - starty;
 	int p0 = 2 * dy - dx;
 	int num = dx;
-	vec2 * result = new vec2[num];
+	length = num + 1;
+	result = new vec2[length];
 	//渲染起始点
-	chess.SetColor(startx, starty);
+	result[0] = vec2(startx, starty);
 	int p = p0;
 	for (int i = 0; i < num; i++)
 	{
@@ -154,22 +299,22 @@ vec2 * BresenhamX(ChessBoard& chess, int startx, int starty, int endx, int endy)
 		p = 2 * dy - 2 * dx*tempy + p;
 		startx++;
 		starty = p >= 0 ? starty+1 : starty;
-		chess.SetColor(startx, starty);
-		result[i] = vec2(startx, starty);
+		//chess.SetColor(startx, starty);
+		result[i+1] = vec2(startx, starty);
 	}
-	return result;
 }
 
-vec2* BresenhamY(ChessBoard& chess, int startx, int starty, int endx, int endy)
+void BresenhamY(vec2* &result, int & length, int startx, int starty, int endx, int endy)
 {
 	 
 	int dx = endx - startx;
 	int dy = endy - starty;
 	int p0 = 2 * dx - dy;
 	int num = dy;
-	vec2 * result = new vec2[num];
+	length = num + 1;
+	result = new vec2[length];
 	//渲染起始点
-	chess.SetColor(startx, starty);
+	result[0] = vec2(startx, starty);
 	int p = p0;
 	for (int i = 0; i < num; i++)
 	{
@@ -178,9 +323,8 @@ vec2* BresenhamY(ChessBoard& chess, int startx, int starty, int endx, int endy)
 		starty++;
 		startx = p >= 0 ? startx + 1 : startx;
 		//chess.SetColor(startx, starty);
-		result[i] = vec2(startx, starty);
+		result[i+1] = vec2(startx, starty);
 	}
-	return result;
 }
 
 void Bresenham(ChessBoard & chess, vec2 center, float radius)
@@ -190,7 +334,7 @@ void Bresenham(ChessBoard & chess, vec2 center, float radius)
 	vec2 cen(x, y);
 	int r = round(radius);
 	y += r;
-	float p = 5 / 4 - r;
+	float p = 5.0f / 4.0f - r;
 	//绘制第一个点
 	EightEqual(chess, vec2(x, y), cen,r);
 	while (x <= y)

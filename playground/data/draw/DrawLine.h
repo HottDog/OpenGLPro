@@ -2,11 +2,15 @@
 #include"playground/data/view/ChessBoard.h"
 void DDA(ChessBoard& chess, vec2 start, vec2 end);
 
+void DDA(vec2*& data, int & length, vec2 start, vec2 end);
+
 void Bresenham(ChessBoard& chess, vec2 start, vec2 end);
 
-vec2 * BresenhamX(ChessBoard& chess, int startx,int starty,int endx,int endy);
+void Bresenham(vec2 * data, int & length, vec2 start, vec2 end);
 
-vec2 * BresenhamY(ChessBoard& chess, int startx, int starty, int endx, int endy);
+void BresenhamX(vec2 *& data,int&length, int startx,int starty,int endx,int endy);
+
+void BresenhamY(vec2 *& data, int&length, int startx, int starty, int endx, int endy);
 
 void Bresenham(ChessBoard & chess, vec2 center, float r);
 

@@ -65,3 +65,11 @@ void ChessBoard::SetColor(int w, int h, vec3 c)
 	colors[h][w] = c;
 	rects[w + h * width].color = c;
 }
+
+void ChessBoard::SetColors(vec2 * datas, int length, vec3 c)
+{
+	for (int i = 0; i < length; i++)
+	{
+		SetColor(datas[i].x, datas[i].y, c);
+	}
+}

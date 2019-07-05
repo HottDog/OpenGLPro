@@ -113,8 +113,7 @@ void DrawRectLines(Rect & rect, GLuint vao, GLuint vertex, GLuint uv, GLuint ebo
 }
 
 void DrawRectLines(Mesh & mesh, GLuint vao, GLuint vertex, GLuint uv, GLuint ebo, GLuint shader) {
-	//
-	shader = GetDefaultShaderWithoutSuffix("test");
+	//	
 	glUseProgram(shader);
 	Vertexs v = mesh.vertexs;
 	VBOBindData(vertex, v.datas, v.count * 4);
